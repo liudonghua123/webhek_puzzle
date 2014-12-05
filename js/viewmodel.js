@@ -20,7 +20,6 @@ function cookieHelper() {
 			game.gb.board.toString() + 
 			"; "+ expires;
 		document.cookie = toWrite;
-		console.log(document.cookie);
 	}
 
 	this.getCookie = function(cname) {
@@ -95,6 +94,14 @@ function Game() {
 		}
 	}
 
+    this.processMouseover = function (w, h) {
+        this.gb.processMouseover(w, h);
+    }
+
+    this.processMouseout = function (w, h) {
+        this.gb.processMouseout(w, h);
+    }
+
 	this.beginGame = function() {
 		var res;
 		this.cookh.readCookie(function(csv){
@@ -159,16 +166,19 @@ function Game() {
 		$(".total").html("总计点击次数: <b>" + this.totalClicks + "</b>");
 	}
 
-	this.applyBindings = function() {
-		$('.gamesquare').click(function(){
-			// Get the other class
-			var cname = $(this).context.className.split(" ")[1];
-			var coord = cname.substring(5).split("q");
-			// console.log("coord " + coord);
-			var height = parseInt(coord[1]);
-			var width = parseInt(coord[0]);
-			self.processClick(width, height);
-		});
+    this.applyBindings = function() {
+		$('.gamesquare').click(function() {
+            var corrd = self.getCorrd(this);
+            self.processClick(corrd.x, corrd.y);
+        });
+        $('.gamesquare').mouseover(function(){
+            var corrd = self.getCorrd(this);
+            self.processMouseover(corrd.x, corrd.y);
+        });
+        $('.gamesquare').mouseout(function(){
+            var corrd = self.getCorrd(this);
+            self.processMouseout(corrd.x, corrd.y);
+        });
 	}
 
 	this.onNewGameClick = function() {
@@ -182,6 +192,14 @@ function Game() {
 		this.gb.renderBoard();
 		this.setupLevel();
 	}
+
+    this.getCorrd = function(context) {
+        var cname = $(context).context.className.split(" ")[1];
+        var coord = cname.substring(5).split("q");
+        var height = parseInt(coord[1]);
+        var width = parseInt(coord[0]);
+        return {x: width, y: height};
+    }
 }
 
 function GameBoard (wd, hi) {
@@ -190,6 +208,8 @@ function GameBoard (wd, hi) {
 	this.wide = wd - 1;
 
 	this.count = 0;
+
+    this.shake_css = "shake shake-slow shake_hover shake-slow_hover";
 
 	// This board is accessed wide first then high
 	//    0 | 1 | 2 | 3 | ....
@@ -227,45 +247,89 @@ function GameBoard (wd, hi) {
 		}
 	}
 
-	this.processClick = function(w, h) {
-		// find the proper range for inversion
-		var lowx = w - 1;
-		var highx = w + 1;
-		var lowy = h - 1;
-		var highy = h + 1;
+    function getFixedXY(x, y) {
+        var lowx = x - 1;
+        var highx = x + 1;
+        var lowy = y - 1;
+        var highy = y + 1;
 
-		// Test for edge cases and change the bounds accordingly
-		if (w == 0) lowx = 0;
-		if (w == this.wide) highx = this.wide;
-		if (h == 0) lowy = 0;
-		if (h == this.high) highy = this.high;
+        // Test for edge cases and change the bounds accordingly
+        if (x == 0) lowx = 0;
+        if (x == this.wide) highx = this.wide;
+        if (y == 0) lowy = 0;
+        if (y == this.high) highy = this.high;
+        return {lowx: lowx, highx: highx, lowy: lowy, highy: highy};
+    }
 
-		// invert all in proper vertical range
-		for (var i = lowy; i <= highy; i++) {
-			// if (i == h) continue;
-			if (this.board[w][i] == 0) {
-				this.board[w][i] = 1;
-				this.count++;
-			} else {
-				this.board[w][i] = 0;
-				this.count--;
-			}
-			this.processCLickView(w, i);
-		}
+    this.processClick = function(w, h) {
+        // find the proper range for inversion
+        var __ret = getFixedXY.call(this, w, h);
+        var lowx = __ret.lowx;
+        var highx = __ret.highx;
+        var lowy = __ret.lowy;
+        var highy = __ret.highy;
+        // invert all in proper vertical range
+        for (var i = lowy; i <= highy; i++) {
+            // if (i == h) continue;
+            if (this.board[w][i] == 0) {
+                this.board[w][i] = 1;
+                this.count++;
+            } else {
+                this.board[w][i] = 0;
+                this.count--;
+            }
+            this.processCLickView(w, i);
+        }
 
-		// invert all in proper horizontal range
-		for (var i = lowx; i <= highx; i++) {
-			if (i == w) continue;
-			if (this.board[i][h] == 0) {
-				this.board[i][h] = 1;
-				this.count++;
-			} else {
-				this.board[i][h] = 0;
-				this.count--;
-			}
-			this.processCLickView(i, h);
-		}
-	}
+        // invert all in proper horizontal range
+        for (var i = lowx; i <= highx; i++) {
+            if (i == w) continue;
+            if (this.board[i][h] == 0) {
+                this.board[i][h] = 1;
+                this.count++;
+            } else {
+                this.board[i][h] = 0;
+                this.count--;
+            }
+            this.processCLickView(i, h);
+        }
+    }
+
+    this.processMouseover = function(w, h) {
+        var __ret = getFixedXY.call(this, w, h);
+        var lowx = __ret.lowx;
+        var highx = __ret.highx;
+        var lowy = __ret.lowy;
+        var highy = __ret.highy;
+        // invert all in proper vertical range
+        for (var i = lowy; i <= highy; i++) {
+            this.processMouseoverView(w, i);
+        }
+
+        // invert all in proper horizontal range
+        for (var i = lowx; i <= highx; i++) {
+            if (i == w) continue;
+            this.processMouseoverView(i, h);
+        }
+    }
+
+    this.processMouseout = function(w, h) {
+        var __ret = getFixedXY.call(this, w, h);
+        var lowx = __ret.lowx;
+        var highx = __ret.highx;
+        var lowy = __ret.lowy;
+        var highy = __ret.highy;
+        // invert all in proper vertical range
+        for (var i = lowy; i <= highy; i++) {
+            this.processMouseoutView(w, i);
+        }
+
+        // invert all in proper horizontal range
+        for (var i = lowx; i <= highx; i++) {
+            if (i == w) continue;
+            this.processMouseoutView(i, h);
+        }
+    }
 
 	// For a single tile finds the corresponding DOM element 
 	// and inverts the color
@@ -278,6 +342,16 @@ function GameBoard (wd, hi) {
 			$(coord).css("background-color", "#5C90FF");
 		}
 	}
+
+    this.processMouseoverView = function (w, h) {
+        var coord = ".coord" + w + "q" + h;
+        $(coord).addClass(this.shake_css);
+    }
+
+    this.processMouseoutView = function (w, h) {
+        var coord = ".coord" + w + "q" + h;
+        $(coord).removeClass(this.shake_css);
+    }
 
 	// Populate the game board with 0s and 1s randomly
 	this.populate = function() {
