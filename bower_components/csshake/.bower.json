@@ -1,0 +1,14 @@
+{
+  "name": "csshake",
+  "homepage": "https://github.com/elrumordelaluz/csshake",
+  "_release": "e0f0bc533b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "e0f0bc533bc4ff2d838b4ec98fb5b3c209b4be18"
+  },
+  "_source": "https://github.com/elrumordelaluz/csshake.git",
+  "_target": "*",
+  "_originalSource": "csshake",
+  "_direct": true
+}
