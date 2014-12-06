@@ -1,0 +1,22 @@
+{
+    "description": "This is a HTML5 puzzle game. Each square has two sides, one is orange and another is blue. Click it, the color of square will flip over, and its adjacent square will also flip. Make all of them blue, then you get through this level.",
+    "title": "Blue Puzzle",
+    "reset": "Reset Level",
+    "new": "Restart",
+    "instruct": "Instructions",
+    "instruct_details": "How to win? \nInstructions：Make all of them blue, then you get through this level",
+    "confirm": "Confirm!",
+    "reset_confirm_details": "Are you really want to do this？",
+    "new_confirm_details": "Are you really want to do this？",
+    "ok": "OK",
+    "cheer_up_1": "Well done",
+    "cheer_up_2": "Perfect",
+    "cheer_up_3": "Nice",
+    "cheer_up_4": "Woe",
+    "cheer_up_5": "I convinced you!",
+    "cheer_up_6": "The new generational genius is naissance, that's you.",
+    "current_level": "Current Level",
+    "current_click_counts": "Current Click Counts",
+    "best_ever_level": "Best Ever Level",
+    "total_click_counts": "Total Click Counts"
+}

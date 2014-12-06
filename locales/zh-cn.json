@@ -1,0 +1,22 @@
+{
+    "description": "这是一个用HTML5制作的智力游戏，有相当的难度。每个方块一面橙色，一面蓝色。点击一个方块，这个方块的颜色会翻转，并且，与它邻接的方块的颜色也会翻转。使拼板全部变成蓝色， 你就算过关了。",
+    "title": "蓝色拼图",
+    "reset": "重置级别",
+    "new": "重新开始",
+    "instruct": "玩法说明",
+    "instruct_details": "如何才算赢：使拼板全部变成蓝色。\n玩法：每个方块一面橙色，一面蓝色。点击一个方块，这个方块的颜色会翻转，并且，与它邻接的方块的颜色也会翻转。",
+    "confirm": "你确定要这样做？",
+    "reset_confirm_details": "你真的想重新开始这关吗？",
+    "new_confirm_details": "你真的想重新开始吗？",
+    "ok": "确认",
+    "cheer_up_1": "非常好",
+    "cheer_up_2": "干得漂亮",
+    "cheer_up_3": "帅呆了",
+    "cheer_up_4": "哇塞",
+    "cheer_up_5": "I服U",
+    "cheer_up_6": "天才诞生了",
+    "current_level": "当前级别",
+    "current_click_counts": "当前点击次数",
+    "best_ever_level": "历史最高级别",
+    "total_click_counts": "总计点击次数"
+}
