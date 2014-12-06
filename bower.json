@@ -26,6 +26,8 @@
   "dependencies": {
     "jquery": "~2.1.1",
     "bootstrap": "~3.3.1",
-    "csshake": "*"
+    "csshake": "*",
+    "browser-i18n": "~0.0.2",
+    "i18next": "~1.7.5"
   }
 }

@@ -1,107 +1,62 @@
 <!DOCTYPE html>
 <head>
-	<meta charset='utf-8'>
+    <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>蓝色拼图</title>
-	<meta name="description" content="这是一个用HTML5制作的智力游戏，有相当的难度。每个方块一面橙色，一面蓝色。点击一个方块，这个方块的颜色会翻转，并且，与它邻接的方块的颜色也会翻转。使拼板全部变成蓝色， 你就算过关了。" />
+    <title>Blue Puzzle</title>
+    <meta name="description"
+          content="This is a HTML5 puzzle game. Each square has two sides, one is orange and another is blue. Click it, the color of square will flip over, and its adjacent square will also flip. Make all of them blue, then you get through this level."/>
 
-	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="bower_components/csshake/csshake.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 
-	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/viewmodel.js"></script>
-	<script type="text/javascript" src="js/controller.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/browser-i18n/sprintf.min.js"></script>
+    <script type="text/javascript" src="bower_components/browser-i18n/i18n.js"></script>
+    <script type="text/javascript" src="js/viewmodel.js"></script>
+    <script type="text/javascript" src="js/controller.js"></script>
 </head>
 
 <body>
-	<div class="container">
-		<div class="heading">
-			<h1 class="title">蓝色拼图</h1>
-			<div class="scoresContainer">
-				<div class="currLevel"></div>
-				<div class="best"></div>
-				<div class="score"></div>
-				<div class="total"></div>
-			</div>
-		</div>
-		<div class="aboveGame">
-			<p class="gameInfo"></p>
-			<a class="reset btn btn-primary">重置级别</a>
-			<a class="newgame btn btn-primary">重新开始</a>
-			<a class="instruct btn btn-primary">玩法说明</a>
-		</div>
-		<div class="board"></div>
-	</div>
+<div class="container">
+    <div class="heading">
+        <h1 id="title" class="title">Blue Puzzle</h1>
 
-	<div id="instructions" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content" id="pullThisHeight">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">
-						<span aria-hidden="true">&times;</span><span class="sr-only">关闭</span>
-					</button>
-					<h4 class="modal-title">玩法说明</h4>
-				</div>
-				<div class="modal-body">
-					<p>如何才算赢：使拼板全部变成蓝色。 <br>
-					玩法：每个方块一面橙色，一面蓝色。点击一个方块，这个方块的颜色会翻转，并且，与它邻接的方块的颜色也会翻转。</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success" data-dismiss="modal">开始！</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+        <div class="scoresContainer">
+            <div class="currLevel"></div>
+            <div class="best"></div>
+            <div class="score"></div>
+            <div class="total"></div>
+        </div>
+    </div>
+    <div class="aboveGame">
+        <p class="gameInfo"></p>
+        <a id="reset" class="reset btn btn-primary">Reset Level</a>
+        <a id="new" class="newgame btn btn-primary">Restart</a>
+        <a id="instruct" class="instruct btn btn-primary">Instructions</a>
+    </div>
+    <div class="board"></div>
+</div>
 
-	<div id="newLevel" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="cheesyGoodJob"></h4>
-				</div>
-				<div class="modal-body">
-					<p id="levelDescriptor"></p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-success" data-dismiss="modal">开始</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
+<div id="message-modal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary callback-btn"></button>
+            </div>
+        </div>
+    </div>
+</div>
 
-	<div id="newGame" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">你确定要这样做？</h4>
-				</div>
-				<div class="modal-body">
-					<p>你真的想重新开始吗？</p>
-				</div>
-				<div class="modal-footer">
-					<button id="newGameConfirm" type="button" class="btn btn-success" data-dismiss="modal">新游戏</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-
-	<div id="restartLevel" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title" id="cheesyGoodJob">你确定要这样做？</h4>
-				</div>
-				<div class="modal-body">
-					<p>你真的想重新开始吗？</p>
-				</div>
-				<div class="modal-footer">
-					<button id="resetLevelConfirm" type="button" class="btn btn-success" data-dismiss="modal">重置级别</button>
-				</div>
-			</div><!-- /.modal-content -->
-		</div><!-- /.modal-dialog -->
-	</div><!-- /.modal -->
-	
 </body>
