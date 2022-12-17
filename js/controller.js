@@ -1,15 +1,23 @@
 // Bindings go here
 
-
-$(document).ready(function () {
-
-    i18n = new I18n({
+function buildI18n(lang) {
+    return new I18n({
         directory: "locales",
-        locale: (window.navigator.userLanguage || window.navigator.language || "en-us").toLowerCase(),
+        locale: lang.toLowerCase(),
         extension: ".json"
     });
+}
 
-    $("#title").text(i18n.__("title"));
+$(document).ready(function () {
+    var lang = window.navigator.userLanguage || window.navigator.language;
+    try {
+        i18n = buildI18n(lang);
+        $("#title").text(i18n.__("title"));
+    } catch (err) {
+        console.log('Unupported lang "' + lang + '", falling back to "en-us"');
+        i18n = buildI18n("en-us");
+        $("#title").text(i18n.__("title"));
+    }
     $("#reset").text(i18n.__("reset"));
     $("#new").text(i18n.__("new"));
     $("#instruct").text(i18n.__("instruct"));
